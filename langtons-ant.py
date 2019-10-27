@@ -17,6 +17,7 @@ from time import sleep
 class Board():
     def __init__(self):
         self.contents = dict()
+        self.ants = []
 
     def setValue(self, x, y, value):
         string = f"{x},{y}"
@@ -47,7 +48,6 @@ class Board():
         return self.width(), self.height()
 
     def asArray(self):
-#        array = np.zeros(self.shape())
         array = np.ones(self.shape()) * np.nan
         # calculate x and y offset required
         xOffset = self.xlim()[0]
@@ -65,6 +65,18 @@ class Board():
 
         array = self.asArray()
         ax.imshow(array, vmin=0)
+
+#        xOffset = self.xlim()[0]
+#        yOffset = self.ylim()[0]
+#        ax.set_xticks(ax.get_xticks()-xOffset)
+#        ax.set_yticks(ax.get_yticks()-yOffset)
+
+    def addAnt(self, ant):
+        self.ants.append(ant)
+
+    def iterate(self):
+        for ant in self.ants:
+            ant.iterate()
 
 class Ant():
     def __init__(self, board, rules, startPosition=None):
@@ -110,18 +122,16 @@ def createRules(string):
         rules[ruleNo] = rule
     return rules
 
-#rules = createRules("rlrrrrrll"*1)
-rules = createRules("rlrrrrlllrr"*1)
+rules = createRules("rlrrrrrll"*1)
+#rules = createRules("rlrrrrlllrr"*1)
 #rules = {0: dict(nextColour=1, turnDirection=1),
 #         1: dict(nextColour=0, turnDirection=-1)}
 board = Board()
-ants = []
-ants.append(Ant(board, rules))
-#ants.append(Ant(board, rules, startPosition=(30, 30)))
-N = 500000
+board.addAnt(Ant(board, rules))
+board.addAnt(Ant(board, createRules("rrlrrlrrlrl"), startPosition=(0, 80)))
+N = 50000
 for i in range(N):
-    for a in ants:
-        a.iterate()
+    board.iterate()
 
 board.plot()
 
