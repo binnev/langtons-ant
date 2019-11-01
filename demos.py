@@ -9,9 +9,9 @@ spec.loader.exec_module(vp)
 
 # create board and run the simulation #########################################
 board = Board()
-board.addAnt(Ant(board, create_rules("rlrrrrrll"*1), startPosition=(0, 0)))
-board.addAnt(Ant(board, create_rules("rrrlr"*1), startPosition=(0, 40)))
-Nmoves = 9000
+board.addAnt(Ant(board, create_rules("rrrlr"*1), startPosition=(0, 0)))
+board.addAnt(Ant(board, create_rules("rlrrrrrll"*1), startPosition=(0, 40)))
+Nmoves = 300000
 
 # store certain states to use for video later
 indices = nonlinear_range(0, Nmoves, m=50, multiplier=2)
@@ -23,6 +23,7 @@ while board.moves < Nmoves:
         moves.append(board.moves)
 board.plot()
 
+''
 # create video ################################################################
 # convert board states into numpy arrays for plt.imshow
 arrays = [board.contentsToArray(s) for s in history]
@@ -38,7 +39,7 @@ vp.VideoPlot(fig, Nframes,
                   string_template="moves: {}",
                   formatting=dict(backgroundcolor="r")),
              savefig_kwargs=dict(dpi=100),
-             delete_images=True,
+             delete_images=False,
              ask_overwrite_permission=False,
              )
 
@@ -72,3 +73,4 @@ rlrllrrrr
 rlrlrlllllll
 rllrrlrrrrrr
 #"""
+#'''
